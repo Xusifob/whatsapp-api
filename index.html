@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Numéro to Whatsapp</title>
+</head>
+<body>
+
+
+<style>
+.form-control {
+	width: 100%;
+	padding: 5px 0;
+	height: 20px;
+}
+
+.button {
+	margin-top: 10px;
+	height: 35px;
+
+	color: #fff;
+	background-color: #0089ec;
+	border: 0;
+	width: 100%;
+	font-size: 14px;
+}
+
+</style>
+
+<form method="POST" id="form">
+
+	<label for="tel">Entrez votre numéro</label>
+
+	<input type="tel" id="tel" placeholder="Numéro de téléphone" class="form-control" required >
+	<input type="submit" class="button" value="Valider">
+
+</form>
+
+<script type="text/javascript">
+	document.getElementById('form').addEventListener('submit',function(e) {
+
+	e.preventDefault();
+
+	let tel = document.getElementById('tel').value;
+
+	tel = tel.replace(/^06/g,'336');
+	tel = tel.replace(/\+/g,'');
+	tel = tel.replace(/ /g,'');
+
+	console.log(tel);
+
+	document.location.href = 'http://api.whatsapp.com/send?phone=' + tel;
+
+
+	});
+</script>
+
+</body>
+</html>

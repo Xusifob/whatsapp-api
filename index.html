@@ -100,7 +100,9 @@
 
 <script type="text/javascript">
 
-    if (!navigator.languages.includes("fr")) {
+    const isFrench = navigator.languages.includes("fr");
+
+    if (!isFrench) {
         document.querySelector('label').innerText = 'Enter your number';
         document.getElementById('tel').placeholder = 'Phone number';
         document.querySelector('input[name="copy"]').value = 'Copy link';
@@ -119,6 +121,32 @@
     }
 
 
+
+    const showToast = (message, duration = 3000) => {
+        // Create the toast element
+        const toast = document.createElement("div");
+        toast.textContent = message;
+        toast.style.position = "fixed";
+        toast.style.bottom = "20px";
+        toast.style.left = "50%";
+        toast.style.transform = "translateX(-50%)";
+        toast.style.backgroundColor = "black";
+        toast.style.color = "white";
+        toast.style.padding = "10px";
+        toast.style.borderRadius = "5px";
+        toast.style.zIndex = "1000";
+        toast.style.textAlign = "center";
+
+        // Append the toast to the body
+        document.body.appendChild(toast);
+
+        // Remove the toast after the specified duration
+        setTimeout(() => {
+            toast.remove();
+        }, duration);
+    }
+
+
     document.getElementById('form').addEventListener('submit', (e) => {
 
         e.preventDefault();
@@ -129,6 +157,7 @@
 
         if (name === 'copy') {
             navigator.clipboard.writeText(tel);
+            showToast(isFrench ? 'Lien copié' : 'Link copied');
         } else if (name === 'redirect') {
             document.location.href = tel;
         }

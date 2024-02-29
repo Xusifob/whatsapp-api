@@ -11,52 +11,129 @@
 
 
 <style>
-.form-control {
-	width: 100%;
-	padding: 5px 0;
-	height: 20px;
-}
 
-.button {
-	margin-top: 10px;
-	height: 35px;
+    * {
+        box-sizing: content-box;
+        font-family: "system-ui";
+    }
 
-	color: #fff;
-	background-color: #0089ec;
-	border: 0;
-	width: 100%;
-	font-size: 14px;
-}
+    body {
+        padding: 4px;
+    }
+
+    .form-control {
+        width: calc(100% - 7px);
+        padding: 5px 2px;
+        height: 20px;
+    }
+
+    form {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    input {
+        margin: 0;
+    }
+
+    .button {
+        margin-top: 10px;
+        height: 35px;
+
+        color: #fff;
+        background-color: #0089ec;
+        border: 1px solid #0089ec;
+        width: 100%;
+        font-size: 14px;
+    }
+
+    .button-secondary {
+        margin-top: 10px;
+        height: 35px;
+
+        color: #0089ec;
+        border: 1px solid #0089ec;
+        background-color: #fff;
+        width: 100%;
+        font-size: 14px;
+    }
+
+    .flex {
+        display: flex;
+        justify-content: space-between;
+        gap: 4px;
+        padding: 0;
+    }
+
+    p {
+        margin: 0;
+        font-size: 12px;
+    }
+
+    .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
 
 </style>
 
 <form method="POST" id="form">
 
-	<label for="tel">Entrez votre numéro</label>
-
-	<input type="tel" id="tel" placeholder="Numéro de téléphone" class="form-control" required >
-	<input type="submit" class="button" value="Valider">
-
+    <div class="form-group" >
+        <label for="tel">Entrez votre numéro</label>
+        <input type="tel" id="tel" placeholder="Numéro de téléphone" class="form-control" required>
+        <p>Nous ne conservons pas les numéros entrés</p>
+    </div>
+    <div class="flex">
+        <input type="submit" name="copy" class="button-secondary" value="Copier le lien">
+        <input type="submit" name="redirect" class="button" value="Valider">
+    </div>
 </form>
 
 <script type="text/javascript">
-	document.getElementById('form').addEventListener('submit',function(e) {
 
-	e.preventDefault();
+    if (!navigator.languages.includes("fr")) {
+        document.querySelector('label').innerText = 'Enter your number';
+        document.getElementById('tel').placeholder = 'Phone number';
+        document.querySelector('input[name="copy"]').value = 'Copy link';
+        document.querySelector('input[name="redirect"]').value = 'Validate';
+        document.querySelector('p').innerText = 'We do not keep the numbers entered';
+    }
 
-	let tel = document.getElementById('tel').value;
+    const getLink = () => {
+        let tel = document.getElementById('tel').value;
 
-	tel = tel.replace(/^06/g,'336');
-	tel = tel.replace(/\+/g,'');
-	tel = tel.replace(/ /g,'');
+        tel = tel.replace(/^06/g, '336');
+        tel = tel.replace(/[- .+()]/, '')
 
-	console.log(tel);
+        return 'http://api.whatsapp.com/send?phone=' + tel;
 
-	document.location.href = 'http://api.whatsapp.com/send?phone=' + tel;
+    }
 
 
-	});
+    document.getElementById('form').addEventListener('submit', (e) => {
+
+        e.preventDefault();
+
+        const tel = getLink();
+
+        const name = e.submitter.name;
+
+        if (name === 'copy') {
+            navigator.clipboard.writeText(tel);
+        } else if (name === 'redirect') {
+            document.location.href = tel;
+        }
+
+    });
+
+
 </script>
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8562731504945062"
+        crossorigin="anonymous"></script>
 
 </body>
 </html>
